@@ -2,6 +2,7 @@ package post_It.Server;
 
 import java.io.InputStream;
 import java.io.ObjectInputStream;
+import java.net.InetSocketAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
@@ -9,7 +10,7 @@ import java.util.List;
 
 public class ServerSocket_Server{
 
-    final int PORT = 4090;
+    final int PORT = 9090;
     List<Socket> list = new ArrayList<>();
     ServerSocket serverSocket = null;
     Socket socket = null;
@@ -18,10 +19,32 @@ public class ServerSocket_Server{
         try {
             //서버용 소켓 객체 하나 생성 
             serverSocket = new ServerSocket(PORT);
-            //접속 무한 대기
-            socket = serverSocket.accept();
-            //접속시 진행
-            Thread loginThread = new Thread(()->{
+            //정보를 받아줄 스트림 2개 많들어 줬음
+
+            InputStream is = socket.getInputStream();
+            ObjectInputStream ois = new ObjectInputStream(is);
+            
+            //
+            // 예시
+            while (true) { 
+                //접속 무한 대기
+                System.out.println("[waiting...]");
+                //접속시 진행
+                socket = serverSocket.accept();
+                //ip 화면에 뿌려주기
+                InetSocketAddress isa = (InetSocketAddress) socket.getRemoteSocketAddress();
+                System.out.println("[connected : " + isa.getHostName() + "]");
+
+                //상대방에게서 명령할 숫자(byte or int), ID, PW, 올듯
+                //byte가 무엇인지 확인하고 switch 만들어가지고 거기다 넣어주면 될...듯?
+                int receive = ois.read();
+                
+                getOrder(receive); // 여기다 숫자 넣어서 원하는 명령을 해주면 됨 ex 0 회원가입 1로그인 2게시글 작성...
+                
+                
+            }
+
+  /*        Thread loginThread = new Thread(()->{
                 try {
                     ObjectInputStream ois = new ObjectInputStream(socket.getInputStream());
                     //접속시 아이디, 비밀번호를  받아줘야 함
@@ -50,14 +73,19 @@ public class ServerSocket_Server{
 
             });
             loginThread.start();
-            
+        */       
 
         } catch (Exception e) {
             // TODO: handle exception
         }
         
         
+    }//init done
+
+    void getOrder(int order){
+
     }
+
 
 
 
