@@ -14,7 +14,10 @@ public class Post_It_Server {
             String M = sc.nextLine();
 
             if (M.equals("1")) {
-
+                ServerSocket_Server ss = new ServerSocket_Server();
+                ss.serverRun();
+            } else if (M.equals("2")) {
+                
             }
 
         }

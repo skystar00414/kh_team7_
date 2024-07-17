@@ -6,6 +6,7 @@ import java.io.ObjectOutputStream;
 import java.io.OutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.List;
 
 public class ServerSocket_Server {
 
@@ -14,6 +15,7 @@ public class ServerSocket_Server {
     // 수를 backlog 매개변수로 지정
     // 참고예제
     // https://hunit.tistory.com/256?source=post_page-----d5b5a27a50a0--------------------------------
+    List<User_Server> list;
 
     public void serverRun() {
 
@@ -61,8 +63,8 @@ public class ServerSocket_Server {
                     case "refresh":
                         post_board_refresh(socket, data);// 새로고침
                         break;
-                    case "another"://미정
-                        
+                    case "another":// 미정
+
                         break;
                 }
                 ois.close();
@@ -104,15 +106,38 @@ public class ServerSocket_Server {
 
     private void login(Socket socket, String data) {
 
-        //data = [아이디,비밀번호] 형태로 받아오자
+        // data = [아이디,비밀번호] 형태로 받아오자
         String arr[] = data.split(",");
         String input_id = arr[0];
         String input_pw = arr[1];
 
-        //get 유저 정보
+        // get 유저 정보
         DataBase_Server ds = new DataBase_Server();
+        ds.get_User_Data_To_File();// 파일 가져왔어용
+        list = ds.getUserlist();// db에서 가져왔어용
+
+        int login_result = 0;
+        // 정보 확인 + 로그인 클레스를 만드는게 좋을까용?
+        switch (login_result) {
+            case 1:
+                login_result++;
+                if (input_id.equals("") || check_User_Date(1, input_id, input_pw) == 0) {
+                    System.out.println("없는 아이디");
+                    break;
+                }
+            case 2:
+                login_result++;
+                if (input_pw.equals("") || check_User_Date(0, input_id, input_pw) == 0) {
+                    System.out.println("없는 비밀번호");
+                    break;
+                }
+            default:
+                break;
+        }
         
-        // 파일 보낼 준비
+        String output_login_result = login_result + "";
+
+        // 파일 보낼 준비 (*로그인 결과만)
         OutputStream os = null;
         ObjectOutputStream oos = null;
 
@@ -120,6 +145,9 @@ public class ServerSocket_Server {
         // new ObjectOutputStream(os);
 
         try {
+
+            //로그인결과를 String 값으로 전달
+            oos.writeObject(output_login_result);
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -132,6 +160,34 @@ public class ServerSocket_Server {
                 e.printStackTrace();
             }
         }
+    }
+
+    public int check_User_Date(int a, String id, String pw){
+        /**
+         * 0 : id, pw check
+         * 1 : id check
+         * 2 : pw check >> 미완
+         */
+        if (a==0) {
+            for (int i = 0; i < list.size(); i++) {
+                if (list.get(i).getID().equals(id) && list.get(i).getPW().equals(pw)) {
+                    return 1;//id, pw가 동일하다면
+                }
+            }
+        }
+
+        if (a==1) {
+            for (int index = 0; index < list.size(); index++) {
+    
+                if (list.get(index).getID().equals(id)) {
+                    return 1;//동일하다면, 즉 있는 아이디라면
+                }
+            }
+        }
+
+
+
+        return 0;//없으면
     }
 
 }
