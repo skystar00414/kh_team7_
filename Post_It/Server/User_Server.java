@@ -5,7 +5,8 @@ public class User_Server {
     private String ID;
     private String PW;
     //private String name;
-    //private String 생년월일, 가입일자 등등;
+    //private String email;
+    //private String 생일, 가입일자 등등;
     
     public User_Server(){//기본 생성자
 

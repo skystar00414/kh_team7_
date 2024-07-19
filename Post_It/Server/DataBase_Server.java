@@ -3,6 +3,8 @@ package post_It.Server;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.ObjectInputStream;
+import java.io.ObjectOutput;
+import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -61,7 +63,24 @@ public class DataBase_Server implements Serializable {
 
     }//get_User_Data done
 
-    //set_User_Date_To_File() do
+    //파일저장기능 미구현 2024-07-19
+    public void set_User_Date_To_File(){
+
+        String file = "User_DB.txt";//파일주소
+        
+        FileOutputStream fos = null;
+        ObjectOutputStream oos = null;
+
+        try {
+            
+        } catch (Exception e) {
+            
+        } finally {
+
+        }
+
+
+    }// set_User_Date_To_File done
 
     
     //check_User_Date(String id, Stirng pw) return number 

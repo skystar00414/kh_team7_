@@ -13,6 +13,7 @@ public class ServerSocket_Server {
     // ServerSocket(int port) : 지정된 포트 번호에 바인딩(고정된) 소켓 만듬 (연결 대기열 최대 50)
     // ServerSocket(int port, int backlog): 지정된 포트 번호에 바인드 된 서버 소켓을 만들고 대기중인 최대 연결
     // 수를 backlog 매개변수로 지정
+    // (*필요한 내용) = 클라에서 제작해야할 부분이 있을 수 있음
     // 참고예제
     // https://hunit.tistory.com/256?source=post_page-----d5b5a27a50a0--------------------------------
     List<User_Server> list;
@@ -29,13 +30,14 @@ public class ServerSocket_Server {
         // new ObjectInputStream(is);
 
         try {
+            
             server = new ServerSocket(PORT);
 
             while (true) {
 
                 // 접속대기 & 접속 후 연결 확인 메시지
                 System.out.println("[Server Waiting]");
-                socket = server.accept();
+                socket = server.accept();//대기해야함
                 System.out.println("[" + socket.getInetAddress() + " : User Connected]");
 
                 // 클라이언트가 준 값 받을 준비
@@ -63,8 +65,8 @@ public class ServerSocket_Server {
                     case "refresh":
                         post_board_refresh(socket, data);// 새로고침
                         break;
-                    case "another":// 미정
-
+                    case "catch":
+                        post_board_catch(socket, data);//게시글 내용 보기
                         break;
                 }
                 ois.close();
@@ -85,23 +87,96 @@ public class ServerSocket_Server {
 
     }
 
+    private void post_board_catch(Socket socket, String data) {
+
+    }
+
     private void post_board_delete(Socket socket, String data) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'post_board_delete'");
+
     }
 
     private void post_board_refresh(Socket socket, String data) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'post_board_refresh'");
+
     }
 
     private void post_board_writing(Socket socket, String data) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'post_board_writing'");
+
     }
 
+    //오류체크안해봄
     private void join(Socket socket, String data) {
 
+        // data에 대한 형식은 클라이언트에서 확인하고 가져와야합니다
+        // data = [아이디,비밀번호,이메일,이름,생년월일] 형태로 받아오자 + 혹은가입일자?(*)
+        String arr[] = data.split(",");
+        String input_id = arr[0];
+        String input_pw = arr[1];
+
+        //아래 3개는 일단 사용하지 않습니다.
+        String input_email = arr[2];
+        String input_name = arr[2];
+        String input_birthday = arr[2];
+
+        // get 유저 정보
+        DataBase_Server ds = new DataBase_Server();//create db object
+        ds.get_User_Data_To_File();//load
+        list = ds.getUserlist();//get
+
+        int flag = 0;
+        //회원가입이니까 중복되는 아이디가 있는지 확인 + 이상이 있으면 flag = 1
+        // 0 = go / 1 = stop
+        flag = check_User_Date(1, input_id, input_pw); //id 중복확인
+
+        if (flag != 0) {
+            //User 객체하나 제작 + list에 추가
+            list.add(new User_Server(input_id, input_pw));
+
+            //ds.setUserlist(list); //list 를 디비에 저장
+            ds.setUserlist(list);
+
+            // ds.set_User_Date_To_File(); //list를 file로 저장
+            ds.set_User_Date_To_File();//미구현
+
+
+        }
+        //null 대신 초기값 N + 아이디 중복이 아닌 오류 체크
+        String output_join_result = "N"; 
+
+        if (flag == 1) {
+            output_join_result = "F"; //아이디 중복으로 인한 실패시
+        } else if (flag == 0) {
+            output_join_result = "T";
+        }
+
+        // 파일 보낼 준비 (*회원가입 결과만)
+        OutputStream os = null;
+        ObjectOutputStream oos = null;
+
+        // socket.getOutputStream();
+        // new ObjectOutputStream(os);
+
+        try {
+
+            os = socket.getOutputStream();
+            oos = new ObjectOutputStream(os);
+            //N : 오류, F : 아이디 중복 T : 회원가입 성공
+            oos.writeObject(output_join_result);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                oos.close();
+                os.close();
+                socket.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        
+        
+
+        // ds.set_User_Date_To_File(); //list를 file로 저장
     }
 
     private void login(Socket socket, String data) {
@@ -145,6 +220,8 @@ public class ServerSocket_Server {
         // new ObjectOutputStream(os);
 
         try {
+            os = socket.getOutputStream();
+            oos = new ObjectOutputStream(os);
 
             //로그인결과를 String 값으로 전달
             oos.writeObject(output_login_result);
@@ -166,7 +243,7 @@ public class ServerSocket_Server {
         /**
          * 0 : id, pw check
          * 1 : id check
-         * 2 : pw check >> 미완
+         * 2 : pw check // 미완
          */
         if (a==0) {
             for (int i = 0; i < list.size(); i++) {
