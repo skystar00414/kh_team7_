@@ -103,7 +103,7 @@ public class ServerSocket_Server {
 
     }
 
-    //오류체크안해봄
+    //오류체크안해봄 + 완료
     private void join(Socket socket, String data) {
 
         // data에 대한 형식은 클라이언트에서 확인하고 가져와야합니다
@@ -114,8 +114,8 @@ public class ServerSocket_Server {
 
         //아래 3개는 일단 사용하지 않습니다.
         String input_email = arr[2];
-        String input_name = arr[2];
-        String input_birthday = arr[2];
+        String input_name = arr[3];
+        String input_birthday = arr[4];
 
         // get 유저 정보
         DataBase_Server ds = new DataBase_Server();//create db object
@@ -124,10 +124,10 @@ public class ServerSocket_Server {
 
         int flag = 0;
         //회원가입이니까 중복되는 아이디가 있는지 확인 + 이상이 있으면 flag = 1
-        // 0 = go / 1 = stop
+        // 0 = go(이상없음) / 1 = stop(중복)
         flag = check_User_Date(1, input_id, input_pw); //id 중복확인
 
-        if (flag != 0) {
+        if (flag == 0) {//0 즉 중복이 아니면
             //User 객체하나 제작 + list에 추가
             list.add(new User_Server(input_id, input_pw));
 
@@ -135,17 +135,18 @@ public class ServerSocket_Server {
             ds.setUserlist(list);
 
             // ds.set_User_Date_To_File(); //list를 file로 저장
-            ds.set_User_Date_To_File();//미구현
+            ds.set_User_Date_To_File();
 
 
         }
         //null 대신 초기값 N + 아이디 중복이 아닌 오류 체크
+        //클라에서는 '오류입니다. 다시한번 시도해 주세요.' 문구를 띄워주자
         String output_join_result = "N"; 
 
         if (flag == 1) {
             output_join_result = "F"; //아이디 중복으로 인한 실패시
         } else if (flag == 0) {
-            output_join_result = "T";
+            output_join_result = "T"; //아이디 이상없음
         }
 
         // 파일 보낼 준비 (*회원가입 결과만)
