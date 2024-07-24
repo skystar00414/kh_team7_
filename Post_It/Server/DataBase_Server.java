@@ -13,12 +13,26 @@ public class DataBase_Server implements Serializable {
     private static final long serialVersionUID = 4890831236169L;
 
    List<User_Server> Userlist;
-    //save();
+    // Userlist save(); done
+    // Userlist load(); done
+    
+    List<Post> Postlist;
+    // Postlist save(); todo
+    // Postlist load(); todo 
 
-    //load();
 
+
+    //list 들 getter, setter
     public List<User_Server> getUserlist() {
         return Userlist;
+    }
+
+    public List<Post> getPostlist() {
+        return Postlist;
+    }
+
+    public void setPostlist(List<Post> postlist) {
+        Postlist = postlist;
     }
 
     public void setUserlist(List<User_Server> userlist) {
