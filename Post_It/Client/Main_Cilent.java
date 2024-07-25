@@ -5,18 +5,10 @@ public class Main_Cilent {
     public static void main(String[] args) {
 
         
-
+        //클라이언트 로그인
         Login_Client LC = new Login_Client();
-
-        String ID = LC.init();
-        
-        if (ID.equals("Err")) {
-            System.out.println("아이디 오류");
-            System.exit(0);
-        }
-
-        
-        
+        LC.init();
+    
         System.out.println("end");
     }
 }

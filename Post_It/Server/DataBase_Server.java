@@ -39,9 +39,6 @@ public class DataBase_Server implements Serializable {
         Userlist = userlist;
     }
 
-
-
-
     //Userlist 불러오기
     @SuppressWarnings({ "resource", "unchecked" })
     public void get_User_Data_To_File(){

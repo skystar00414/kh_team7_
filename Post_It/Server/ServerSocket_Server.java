@@ -94,10 +94,10 @@ public class ServerSocket_Server {
          * 잘 받아주면됩니다.
          * 
          * 약속 : 각 String 값을 쪼게기 위해 
-         * regex로 :-cut-ter-: 를 사용하도록 하겠습니다.
-         * 
+         * regex로 :$$: 를 사용하도록 하겠습니다.
+         * cutter : :$$:
          */
-        String arr[] = data.split(":-cut-ter-:");
+        String arr[] = data.split(":$$:");
 
         String input_post_type = arr[0]; // 게시판 종류
         String input_post_title = arr[1];   // 제목
@@ -185,6 +185,7 @@ public class ServerSocket_Server {
             os = socket.getOutputStream();
             oos = new ObjectOutputStream(os);
             // N : 오류, F : 아이디 중복 T : 회원가입 성공
+            oos.writeObject("return_login");
             oos.writeObject(output_join_result);
 
         } catch (Exception e) {
