@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="teamPlay.dao.PostitDAO">
+	
+	<insert id="insertNewBorder">
+	insert into border(bo_title) VALUES (#{bo_title})
+	</insert>
+		
+	<delete id="deleteBorder">
+	delete FROM border where bo_title = #{bo_title}
+	</delete>
+		
+	<select id="selectBorder" resultType="BorderVO">
+	select * FROM border where bo_title = #{bo_title}
+	</select>
+	
+	<update id="updateBorder">
+	update border set
+		bo_oldtitle = bo_title,
+		bo_title = #{bo_title},
+		bo_detail = #{bo_detail}
+	WHERE
+		bo_title = #{bo_oldtitle};
+	</update>
+		
+</mapper>
+<!-- @Param("bo_oldtitle")String oldTitle, @Param("bo_title")String title, @Param("bo_detail")String detail); -->

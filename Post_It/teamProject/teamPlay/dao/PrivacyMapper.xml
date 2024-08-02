@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="teamPlay.dao.PrivacyDAO">
+	
+	<select id="selectCheckPrivacyID" resultType="boolean">
+	select * from privacy WHERE pr_id = #{pr_id};
+	</select>
+	
+	<select id="selectLoginUser" resultType="PrivacyVo">
+	select * from privacy WHERE pr_id = #{pr_id} and pr_pw = #{pr_pw}
+	</select>
+	
+	<insert id="insertJoinUser">
+	insert into privacy(pr_id, pr_pw, pr_gender, pr_birth_day, pr_phone, pr_email, pr_au_key)
+	VALUES (#{pr.pr_id}, #{pr.pr_pw}, #{pr.pr_gender}, #{pr.pr_birth_day}, #{pr.pr_phone}, #{pr.pr_email}, #{pr.pr_au_key});
+	</insert>
+	
+	<update id="updateFailedId">
+	update privacy SET pr_failed = pr_failed + 1 WHERE pr_id = #{pr_id}
+	</update>
+
+	<update id="updateSucceedId">
+	update privacy SET pr_failed = 0 WHERE pr_id = #{pr_id}
+	</update>
+	
+
+	
+</mapper>
