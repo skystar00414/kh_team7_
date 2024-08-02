@@ -6,21 +6,18 @@
 	<title>회원가입</title>
 	<script src="../../static/js/jQuery.min.js"></script>
 	<style>
-		.form-group>label, .form-group>input {
-			float: left;
-		}
-		.form-group::after {
-			display: block; content: ''; clear: both;
+		.form-group {
+			margin-bottom: 10px;
 		}
 		.form-group>label {
 			width: 120px;
+			display: inline-block;
 		}
 		.form-group>.form-control {
 			width: calc( 100% - 120px );
 			box-sizing: border-box;
 		}
 		.form-control {
-			margin-bottom: 10px;
 			padding: 5px;
 			font-size: 14px;
 		}
@@ -28,10 +25,15 @@
 			text-align: center;
 		}
 		[class^=error] {
-			color: red; margin-bottom: 10px; display: none;
+			color: red;
+			margin-bottom: 10px;
+			display: none;
 		}
 		.btn {
-			width: 100%; height: 30px; background-color: aquamarine; border: 2px solid aquamarine;
+			width: 100%;
+			height: 30px;
+			background-color: aquamarine;
+			border: 2px solid aquamarine;
 			cursor: pointer;
 		}
 	</style>
@@ -70,59 +72,58 @@
 			</div>
 		</fieldset>
 		<script>
-			$('#pw').click(function(){
+			$('#pw').focus(function(){
 				$('.error-pw').text('영문자 대/소문자 특수문자, 숫자 포함 8 ~ 32자').show();
 			});
 			$('#pw').blur(function(){
 				$('.error-pw').text('').hide();
 			});
-			$('form').submit(function(){
+			$('form').submit(function() {
 				var flag = true;
+				
 				var id = $('#id').val();
-				if(id == ''){
+				if (id == '') {
 					$('.error-id').text('필수 작성 항목입니다.').show();
 					flag = false;
-				}
-				else{
+				} else {
 					$('.error-id').text('').hide();
 				}
-				
+
 				var pw = $('#pw').val();
-				if(pw == ''){
+				if (pw == '') {
 					$('.error-pw').text('필수 작성 항목입니다.').show();
 					flag = false;
-				}
-				else{
+				} else {
 					$('.error-pw').text('').hide();
 				}
-				
+
 				var pw2 = $('#pw2').val();
-				if(pw2 == ''){
+				if (pw2 == '') {
 					$('.error-pw2').text('필수 작성 항목입니다.').show();
 					flag = false;
-				}
-				else{
+				} else if (pw !== pw2) {
+					$('.error-pw2').text('비밀번호가 일치하지 않습니다.').show();
+					flag = false;
+				} else {
 					$('.error-pw2').text('').hide();
 				}
-				
+
 				var em = $('#em').val();
-				if(em == ''){
+				if (em == '') {
 					$('.error-em').text('필수 작성 항목입니다.').show();
 					flag = false;
-				}
-				else{
+				} else {
 					$('.error-em').text('').hide();
 				}
-				
+
 				var ad = $('#ad').val();
-				if(ad == ''){
+				if (ad == '') {
 					$('.error-ad').text('필수 작성 항목입니다.').show();
 					flag = false;
-				}
-				else{
+				} else {
 					$('.error-ad').text('').hide();
 				}
-				
+
 				return flag;
 			});
 		</script>
