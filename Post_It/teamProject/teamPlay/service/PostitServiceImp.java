@@ -2,6 +2,7 @@ package teamPlay.service;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.List;
 
 import org.apache.ibatis.io.Resources;
 import org.apache.ibatis.session.SqlSession;
@@ -81,5 +82,11 @@ public class PostitServiceImp implements PostitService{
 		}
 		
 		
+	}
+
+	@Override
+	public List<BorderVO> selectBorderListOutput() {
+		
+		return postitDao.selectBorderListOutput();
 	}
 }

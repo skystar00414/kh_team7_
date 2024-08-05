@@ -1,4 +1,4 @@
-package teamPlay.model.vo;
+package teamPlayClient.objectPack;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -14,12 +14,9 @@ public class BorderVO {
 	private String bo_oldtitle;// varchar(30)
 	
 	
-	
 	@Override
 	public String toString() {
 		return bo_number+"@@"+bo_title;
 	}
 
-	
-	
 }

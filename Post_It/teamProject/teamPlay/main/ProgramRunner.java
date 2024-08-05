@@ -154,7 +154,7 @@ public class ProgramRunner {
 			System.out.print("get gender\n>>");
 			String genderString = scan.nextLine();
 			
-			System.out.print("get birth\n>>");
+			System.out.print("get birth-day\n>>");
 			String birthString = scan.nextLine();
 			
 			System.out.print("get phone\n>>");
