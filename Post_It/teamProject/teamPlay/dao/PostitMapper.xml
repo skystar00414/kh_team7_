@@ -24,6 +24,10 @@
 	WHERE
 		bo_title = #{bo_oldtitle};
 	</update>
+	
+	<select id="selectBorderListOutput" resultType="BorderVO">
+	select * from border
+	</select>
 		
 </mapper>
 <!-- @Param("bo_oldtitle")String oldTitle, @Param("bo_title")String title, @Param("bo_detail")String detail); -->

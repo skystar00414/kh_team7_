@@ -6,12 +6,15 @@ import java.io.ObjectOutputStream;
 import java.io.OutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
-
 
 import teamPlay.controller.PostitController;
 import teamPlay.controller.PrintController;
 import teamPlay.controller.PrivacyController;
+import teamPlay.model.vo.BorderVO;
+import teamPlay.model.vo.PostitVO;
 import teamPlay.model.vo.PrivacyVO;
 
 public class ServerRunner {
@@ -35,7 +38,10 @@ public class ServerRunner {
 
 		try {
 			server = new ServerSocket(PORT);
-
+		} catch (Exception  e) {
+			System.out.println("[서버 이미 대기중]");
+		}
+		try {
 			while (true) {
 
 				System.out.println("[Waiting . . .]");
@@ -55,7 +61,7 @@ public class ServerRunner {
 				String input_String = ois.readUTF(); // 데이터 (String 값을 받습니다.)
 				// cutter @@
 				
-				
+				System.out.println(order + "@@" + input_String);
 				
 				order = order.trim(); // 클라에서 String 값을 2개 줍니다 하나는 오더 하나는 데이터 입니다.
 
@@ -75,25 +81,32 @@ public class ServerRunner {
 							privacyController.failedid(arr[0]);
 						}
 						
-						oos.writeUTF("$spread@@wrong Login");
+						oos.writeUTF("$spread@@wrongLogin");
 					}
 					
 					break;
 				case "$join":
 					if (privacyController.joinUser(input_String)) {
-						oos.writeUTF("$spread@@Join success");
+						oos.writeUTF("$spread@@Joinsuccess");
 					} else {
-						oos.writeUTF("$spread@@Join fail");
+						oos.writeUTF("$spread@@Joinfail");
 					}
 					break;
 				case "$borderListSelect":
-					
+					List<BorderVO> listBorderVO = null;
+					listBorderVO = postitController.borderListOutput();
+					oos.writeObject(listBorderVO);// object 전송입니다. 잘 받아주어야 해용
 					oos.writeUTF("borderList");// 임시
 					break;
 					
 				case "$categoryListSelect":
 					
 					oos.writeUTF("categoryList");// 임시
+					break;
+				case "$showPostList"://전체 글 보기
+					ArrayList<PostitVO> listPostVO = null;
+					listPostVO = postitController.postListOutput(input_String); // page 받아줘야함
+					oos.writeObject(listPostVO);
 					break;
 					
 				case "$postInsert":
@@ -130,8 +143,8 @@ public class ServerRunner {
 		} finally {
 			try {
 				
-				ois.close();
 				is.close();
+				ois.close();
 				server.close();
 			} catch (Exception e) {
 				e.printStackTrace();

@@ -1,8 +1,12 @@
 package teamPlay.controller;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
+import db.community.model.vo.PostVO;
 import teamPlay.model.vo.BorderVO;
+import teamPlay.model.vo.PostitVO;
 import teamPlay.service.PostitService;
 import teamPlay.service.PostitServiceImp;
 
@@ -113,6 +117,20 @@ public class PostitController {
 		System.out.println(border.getBo_title());
 		
 		postitService.updateBorder(border, oldTitle, title, Detail);
+	}
+
+	public List<BorderVO> borderListOutput() {
+		
+		return postitService.selectBorderListOutput();
+	}
+
+	public ArrayList<PostitVO> postListOutput(String input_String) {
+		// input_string에 페이지가 들어가있어야 함
+		String arr[] = input_String.split("@@");
+		
+		
+		
+		return null;
 	}
 
 }
