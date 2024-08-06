@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="teamPlay.dao.PostitDAO">
+	
+	<insert id="insertNewBorder">
+	insert into border(bo_title) VALUES (#{bo_title})
+	</insert>
+		
+	<delete id="deleteBorder">
+	delete FROM border where bo_title = #{bo_title}
+	</delete>
+		
+	<select id="selectBorder" resultType="BorderVO">
+	select * FROM border where bo_title = #{bo_title}
+	</select>
+	
+	<update id="updateBorder">
+	update border set
+		bo_oldtitle = bo_title,
+		bo_title = #{bo_title},
+		bo_detail = #{bo_detail}
+	WHERE
+		bo_title = #{bo_oldtitle};
+	</update>
+	
+	<select id="selectBorderListOutput" resultType="BorderVO">
+	select * from border
+	</select>
+	
+	<select id="selectCategoryListOutput" resultType="CategoryVO">
+	select ca_number, ca_bo_number, ca_name from category
+	join border on bo_number = ca_bo_number
+	where bo_title = #{name};
+	</select>
+	
+	<select id="selectPostListOutput" resultType="PostitVO">
+	select poster.* from poster
+	join category on po_ca_number = ca_number
+	where ca_name = #{category}
+	</select>
+	
+	
+	<select id="selectPostOutput" resultType="PostitVO">
+	select * from poster where po_number = #{po_number}
+	</select>
+	
+	
+	<select id="setectCategory" resultType="CategoryVO">
+	select * from category where ca_name = #{ca_name}
+	</select>
+	
+	<select id="selectId" resultType="PrivacyVO">
+	select * from privacy where pr_id = #{pr_id}
+	</select>
+	
+	<insert id="insetPostInput">
+	insert into poster(po_bo_number, po_ca_number, po_pr_number,po_date, po_title, po_content)
+	VALUES(#{po_bo_number},#{po_ca_number},#{po_pr_number},now(),#{po_title},#{po_content})
+	</insert>
+	
+	
+</mapper>
+<!-- @Param("bo_oldtitle")String oldTitle, @Param("bo_title")String title, @Param("bo_detail")String detail); -->
