@@ -58,7 +58,7 @@ public class MainClient {
 	private void runAfterLogin(String M) {
 		if (M.equals("1")) {
 			System.out.println("*--- 보드선택 ---*");
-			String borderString = client.ClientRun("$borderListSelect", "getList");
+			client.ClientRun("$borderListSelect", "getList");
 			
 		} else if (M.equals("2")) {
 			System.out.println("*--- 카테고리 선택 ---*");
@@ -117,9 +117,9 @@ public class MainClient {
 		PrintClientController.printRequestAnswer();
 		String pwtmp = scan.nextLine();
 
-		String idTokenString = client.ClientRun("$login", idtmp + "@@" + pwtmp);
+		LoginToken = client.ClientRun("$login", idtmp + "@@" + pwtmp);
 
-		setLoginToken(idTokenString);// id@@day now();
+		// id@@day now();
 	}
 
 	private void joinInit() {
@@ -137,8 +137,8 @@ public class MainClient {
 		System.out.println("gender : 남/여 중 택 1");
 		PrintClientController.printRequestAnswer();
 		String gendertmp = scan.nextLine();
-
-		if (!gendertmp.equals("남") || !gendertmp.equals("여")) {
+		System.out.println(gendertmp);
+		if (!gendertmp.equals("남") && !gendertmp.equals("여")) {
 			PrintClientController.printWrongMSG();
 			return;
 		}
