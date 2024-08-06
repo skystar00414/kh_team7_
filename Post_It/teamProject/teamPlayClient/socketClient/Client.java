@@ -26,7 +26,7 @@ public class Client {
 	
 	private Scanner scan = new Scanner(System.in); //쓸거같지는 않음
 	private int PORT = 9001;
-	private String IP = "127.0.0.1";
+	private String IP = "192.168.30.205";
 	private String borderC = "";
 	private String categoryC = "";
 
